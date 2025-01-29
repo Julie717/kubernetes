@@ -1,0 +1,68 @@
+namespace: ci-cd-helm
+appName: jenkins
+configMap:
+  authConfigMap: &authConfigMap  basic-security
+  jenkinsConfigMap: &jenkinsConfigMap jenkins-config
+  jenkinsTasksConfigMap: &jenkinsTasksConfigMap jenkins-tasks-config
+deployment:
+  replicaCount: 1
+  label: jenkins
+  container:
+    name: jenkins
+    image: jfrog.it-academy.by/public/jenkins-ci:ybuyalskaya
+    imagePullPolicy: IfNotPresent
+    env:
+      javaOpts:
+        value: "-Djenkins.install.runSetupWizard=false"
+      cascJenkinsConfig:
+        value: /var/jenkins_home/casc_configs/jenkins.yaml
+    httpPort: 8080
+    jnlpPort: 50000
+resources:
+  requests:
+    cpu: 2
+    memory: 2Gi
+  limits:
+    cpu: 3
+    memory: 3Gi
+volumes:
+  - name: jenkins-auth-config
+    configMap:
+      name: *authConfigMap
+  - name: jenkins-config-yaml
+    configMap:
+      name: *jenkinsConfigMap
+  - name: jenkins-config
+    nfs:
+      server: 192.168.37.105
+      path: /mnt/IT-Academy/nfs-data/sa2-30-24/Yuliya_Buyalskaya/jenkins
+  - name: jenkins-tasks-config
+    configMap:
+      name: *jenkinsTasksConfigMap
+volumeMounts:
+  - name: jenkins-auth-config
+    mountPath: /var/jenkins_home/init.groovy.d/basic-security.groovy
+    subPath: basic-security.groovy
+  - name: jenkins-config-yaml
+    mountPath: /var/jenkins_home/casc_configs/jenkins.yaml
+    subPath: jenkins.yaml
+  - name: jenkins-config
+    mountPath: /var/jenkins_home
+  - name: jenkins-tasks-config
+    mountPath: /var/jenkins_home/jobs/test_helm_job/config.xml
+    subPath: config.xml
+clusterRoleBinding:
+ apiGroup: rbac.authorization.k8s.io
+ name: cluster-admin
+ingress:
+  ingressClassName: nginx
+  host: jenkins.k8s-4.sa
+  port: 8080
+service:
+  port: 8080
+slave:
+  port: 50000
+secret:
+  name: jenkins-secret
+  password: c29tZV9wYXNz
+  type: Opaque

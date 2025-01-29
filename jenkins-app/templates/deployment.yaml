@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.label }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.label }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.container.name }}
+          image:  {{ .Values.deployment.container.image }}
+          imagePullPolicy:  {{ .Values.deployment.container.imagePullPolicy }}
+          env:
+            - name: PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: password
+            - name: JAVA_OPTS
+              value:  {{ .Values.deployment.container.env.javaOpts.value }}
+            - name: CASC_JENKINS_CONFIG
+              value:  {{ .Values.deployment.container.env.cascJenkinsConfig.value }}
+          ports:
+            - name: http-port
+              containerPort: {{ .Values.deployment.container.httpPort }}
+            - name: jnlp-port
+              containerPort: {{ .Values.deployment.container.jnlpPort }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+
+
