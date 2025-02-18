@@ -60,6 +60,7 @@ ingress:
   port: 8080
 service:
   port: 8080
+  nodePort: 30010
 slave:
   port: 50000
 secret:

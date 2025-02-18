@@ -3,12 +3,12 @@ entries:
   jenkins-app:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-01-29T20:10:00.145828819Z"
+    created: "2025-02-18T22:25:53.793417913Z"
     description: A Helm chart for Kubernetes
-    digest: a330a3c8a85266c0a4ea373406efc3780472cd1c00a69a399a031f9bd6aef3a8
+    digest: 64d921e5c2a29aae664e020f258b4d74e692062f95a5a9d600fdfd4e80658f52
     name: jenkins-app
     type: application
     urls:
     - https://julie717.github.io/kubernetes/jenkins-app-releases/jenkins-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-29T20:10:00.141714963Z"
+generated: "2025-02-18T22:25:53.790932246Z"

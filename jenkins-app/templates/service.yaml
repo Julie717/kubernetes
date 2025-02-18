@@ -4,10 +4,12 @@ metadata:
   name: {{ .Values.appName }}
   namespace: {{ .Values.namespace }}
 spec:
+  type: NodePort
   ports:
     - name: master
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
+      nodePort: {{ .Values.service.nodePort }}
     - name: slave
       port: {{ .Values.slave.port }}
       targetPort: {{ .Values.slave.port }}
