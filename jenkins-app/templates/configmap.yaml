@@ -51,7 +51,7 @@ data:
         unclassified:
           location:
             adminAddress: "pluhin@gmail.com"
-            url: "http://jenkins.k8s-XX.sa/"
+            url: "http://jenkins.k3s-2.sa/"
           shell:
             shell: "/bin/bash"
 
