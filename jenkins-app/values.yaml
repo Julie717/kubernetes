@@ -56,7 +56,7 @@ clusterRoleBinding:
  name: cluster-admin
 ingress:
   ingressClassName: nginx
-  host: jenkins.k8s-4.sa
+  host: jenkins.k3s-2.sa
   port: 8080
 service:
   port: 8080
